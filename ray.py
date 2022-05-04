@@ -6,6 +6,8 @@ Created on Sun Dec  5 14:10:36 2021
 """
 from numpy import*
 from object import*
+
+
 def localpix(Nx,Ny):
     rO=posCam+n*Ca+rIni+Nx*u1+Ny*u2
     return rO
