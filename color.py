@@ -47,19 +47,23 @@ def colorCompute(rayPos,rayDir,formList):
     for i in range(0,len(formList)):
         if formList[i][0] == "sphere":
             touchPos,RayHit,colorHit,d = interSphere(rayDir,rayPos,formList[i])
+            #d*= cos(fov)
             numObj=i
             if RayHit==True:      
                 if d < objTouch[1]:
                     colorHit=colorHit/d
                     n=touchPos-formList[i][2]
                     LightVec = array(touchPos-sun)
+                    #LightVec = true_divide(LightVec,linalg.norm(LightVec))
                     objTouch=[numObj,d,touchPos,colorHit,RayHit,n,LightVec]     
         elif formList[i][0] == "plan":
             touchPos,RayHit,colorHit,d = interPlan(rayDir,rayPos,formList[i])           
+            #d*= cos(fov)
             numObj=i
             if RayHit == True:
                 if d < objTouch[1]:
                     LightVec = array(touchPos-sun)
+                    #LightVec = true_divide(LightVec,linalg.norm(LightVec))
                     n=formList[i][2]
                     objTouch=[numObj,d,touchPos,colorHit,RayHit,n,LightVec]
     return objTouch

@@ -9,24 +9,29 @@ from math import tan,cos,radians
 from PIL import*
 
 
-figure = [["sphere",0.5,[2,-1,-2],[255,255,255]],
-          ["sphere",0.5,[10,-1,-2],[255,255,255]],
-          ["plan",[0,1,0],[0,2,0],[255,255,255]]]
-
-
-
+figure =[]
+"""
+ [["sphere",0.5,[1,0,1],[155,255,50]],
+          ["sphere",0.5,[15,0,1],[255,155,50]]]
+          ["plan",[0,1,0],[0,-1,0],[255,255,255]]]"""
 
 # Constantes
-width = 1500
+width = 500
 height = 500
-
 n=1
-f=100
-fov = 60
-posCam = array([-1,0,0],dtype= int)
-posEcran = array([0+n,0,0])
+f=200
+fov = 100
+#fov /= linalg.norm(fov)
+
 H = 2*n*tan(radians(fov/2))
+H/= linalg.norm(H)
 L =   (width/height)*H
+L /= linalg.norm(L)
+
+
+posCam = array([0,0,-1],dtype= int)
+posEcran = array([0-n,0,0])
+
 
 Ca =  array([1,0,0])
 Ca =  Ca/linalg.norm(Ca)
@@ -44,6 +49,6 @@ im =  Image.new("RGB",(width,height))
 skyColor = array([154,202,231])
 horizon = array([227,169,136])
 
-sun = array([0.5,0,-1],dtype=int)
+sun = array([15,-5,-5],dtype=int)
 sunVec = array(sun-posCam, dtype= int)
 sunVec= true_divide(sunVec,linalg.norm(sunVec))

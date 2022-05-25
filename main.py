@@ -16,7 +16,20 @@ from color import*
 from multiprocessing import*
 from os import*
 from glob import*
+from random import*
 #[i,d,touchPos,colorHit,RayHit]
+
+def randSphere(nb):
+    for i in range(nb):
+        form = []
+        form.append("sphere")
+        form.append(uniform(0.5,1))
+        form.append([uniform(-5,100),uniform(-5,5),uniform(5,1)])
+        form.append([uniform(50,200),uniform(50,200),uniform(50,200)])
+        figure.append(form)
+        
+
+
 
 def main(partBeg,partEn,hbeg,hend,sun,i,objet): 
     l = partEn-partBeg #longeur section
@@ -32,16 +45,22 @@ def main(partBeg,partEn,hbeg,hend,sun,i,objet):
             currentRayPix,direction = calculRay(currentPix)
             computedRay = colorCompute(currentPix, direction, objet)
             if computedRay[4] == False:
-                pixelColor[xp,yp] = colorSky(direction,sunVec)
+                pixelColor[xp,yp] =  tuple([100,100,100]) #colorSky(direction,sunVec)
             else:
-                pixelColor[xp,yp] = colorObj(computedRay[6],computedRay[3],computedRay[5])
+                LightVecComputed = colorCompute(computedRay[3], computedRay[6], objet)
+                if LightVecComputed[4]==True:
+                    pixelColor[xp,yp]=tuple([0,0,0])
+                else:
+                    pixelColor[xp,yp] = colorObj(computedRay[6],computedRay[3],computedRay[5])
             yp+=1
         xp+=1
     ime.save("image\\"+str(i)+".png")
     
 
 if __name__ == "__main__" :
+    randSphere(20)
     fichiersAsupr = glob("image\\*.png")
+    
     for fichierAsupr in fichiersAsupr:
         remove(fichierAsupr)
     
@@ -49,9 +68,11 @@ if __name__ == "__main__" :
     pas = int(width/(core/2))
     off = int(width % (core/2))
     aled = []
+    
     #width part calcul
     m = 0
     u = pas+off
+    
     #height part calcul
     hup = int(ceil(height/2))
     for i in range(0,int((core/2))):
@@ -77,6 +98,7 @@ if __name__ == "__main__" :
         
     partIm =listdir("image\\")
     image1_size = [0,0]
+    
     for i in range(0,int((core/2))):
         image1 = Image.open("image\\"+partIm[i],mode="r")
         im.paste(image1,(image1_size[0]*i,0))    
@@ -85,6 +107,7 @@ if __name__ == "__main__" :
         
     image1_size = [0,0]
     count = 0
+    
     for i in range(int(core/2),core):
         image1 = Image.open("image\\"+partIm[i],mode="r")
         im.paste(image1,(image1_size[0]*count,hup))
@@ -94,5 +117,5 @@ if __name__ == "__main__" :
     im.show()
 
 
-#main(0,1000,0,1000,sun,'a',figure)
+#main(0,500,0,500,sun,'a',figure)
 
